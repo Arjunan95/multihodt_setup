@@ -78,7 +78,7 @@ services:
       - /var/run/:/host/var/run/
       - ./channel/:/etc/hyperledger/channel/
     extra_hosts:
-      - "orderer.example.com:13.233.115.108"
+      - "orderer.example.com:113.233.115.108"
       - "orderer2.example.com:113.233.115.108"
       - "orderer3.example.com:113.233.115.108"
       - "peer0.org1.example.com:15.206.237.145"

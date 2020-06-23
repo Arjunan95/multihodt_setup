@@ -201,7 +201,7 @@ services:
       - ./crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/crypto/peer/msp
       - ./crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel-artifacts/:/etc/hyperledger/channel/
+      - ./:/etc/hyperledger/channel/
     extra_hosts:
       - "orderer.example.com:3.7.65.250"
       - "orderer2.example.com:3.7.65.250"
@@ -247,7 +247,7 @@ services:
       - ./crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/crypto/peer/msp
       - ./crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel-artifacts/:/etc/hyperledger/channel/
+      - ./:/etc/hyperledger/channel/
     extra_hosts:
       - "orderer.example.com:3.7.65.250"
       - "orderer2.example.com:3.7.65.250"

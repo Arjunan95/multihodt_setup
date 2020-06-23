@@ -3,7 +3,7 @@ export ORDERER_CA=${PWD}/crypto-config/ordererOrganizations/example.com/orderers
 export PEER0_ORG1_CA=${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 export PEER0_ORG2_CA=${PWD}/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 export PEER0_ORG3_CA=${PWD}/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
-export FABRIC_CFG_PATH=${PWD}/config/
+# export FABRIC_CFG_PATH=${PWD}/config/
 
 # export CHANNEL_NAME=verificationchannel
 export VERIFICATION_CHANNEL="verificationchannel"
@@ -48,7 +48,7 @@ setGlobalsForPeer1Org2(){
 
 createVerificationChannel(){
     # rm -rf ./channel-artifacts/*
-    setGlobalsForPeer0Org1
+    # setGlobalsForPeer0Org1
     peer channel create -o orderer.example.com:7050 -c $VERIFICATION_CHANNEL \
     --ordererTLSHostnameOverride orderer.example.com \
     -f ./channel-artifacts/${VERIFICATION_CHANNEL}.tx --outputBlock ./channel-artifacts/${VERIFICATION_CHANNEL}.block \
@@ -56,7 +56,7 @@ createVerificationChannel(){
 }
 
 createCertificateChannel(){
-    setGlobalsForPeer0Org3
+    # setGlobalsForPeer0Org3
     peer channel create -o orderer.example.com:7050 -c $CERTIFICATE_CHANNEL \
     --ordererTLSHostnameOverride orderer.example.com \
     -f ./channel-artifacts/${CERTIFICATE_CHANNEL}.tx --outputBlock ./channel-artifacts/${CERTIFICATE_CHANNEL}.block \
@@ -67,27 +67,27 @@ createCertificateChannel(){
 
 joinChannel(){
     echo "===================== peer0.Org1 joinChannel $VERIFICATION_CHANNEL ====================="
-    setGlobalsForPeer0Org1
+    # setGlobalsForPeer0Org1
     peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
 
     echo "===================== peer0.Org2 joinChannel  $VERIFICATION_CHANNEL ====================="
-    setGlobalsForPeer0Org2
+    # setGlobalsForPeer0Org2
     peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
     
     echo "===================== peer1.Org2 joinChannel $VERIFICATION_CHANNEL ====================="
-    setGlobalsForPeer1Org2
+    # setGlobalsForPeer1Org2
     peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
 
     echo "===================== peer0.Org2 joinChannel  $CERTIFICATE_CHANNEL ====================="
-    setGlobalsForPeer0Org2
+    # setGlobalsForPeer0Org2
     peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
     
     echo "===================== peer1.Org2 joinChannel $CERTIFICATE_CHANNEL ====================="
-    setGlobalsForPeer1Org2
+    # setGlobalsForPeer1Org2
     peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
 
     echo "===================== peer0.Org3 joinChannel $CERTIFICATE_CHANNEL ====================="
-    setGlobalsForPeer0Org3
+    # setGlobalsForPeer0Org3
     peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block   
 }
 
@@ -113,6 +113,6 @@ updateAnchorPeers(){
 }
 
 createVerificationChannel
-createCertificateChannel
-joinChannel
-updateAnchorPeers
+# createCertificateChannel
+# joinChannel
+# updateAnchorPeers

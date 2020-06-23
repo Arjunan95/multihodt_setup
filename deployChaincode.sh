@@ -30,61 +30,84 @@ packageChaincode() {
         --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} \
         --label ${CC_NAME}_${VERSION}
 }
-packageChaincode
+# packageChaincode
 
-installChaincode() {
-    
-    echo "===================== installChaincode peer0.org1 ===================== "
-    setGlobalsForPeer0Org1
-    ./bin/peer lifecycle chaincode install ${CC_NAME}.tar.gz
+installCadvChaincode() {
+    echo "===================== installCadvChaincode peer0.org1 ===================== "
+     docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org1.example.com peer lifecycle chaincode install fabcar.tar.gz
+}
 
-    echo "===================== installChaincode peer0.org3 ===================== " 
-    setGlobalsForPeer0Org3
-    ./bin/peer lifecycle chaincode install ${CC_NAME}.tar.gz
-    
-    echo "===================== installChaincode peer0.org2 ===================== "
-    setGlobalsForPeer0Org2
-    ./bin/peer lifecycle chaincode install ${CC_NAME}.tar.gz
+# installCadvChaincode
+
+installTnegaChaincode(){
+ echo "===================== installChaincode peer0.org2 ===================== "
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
+    peer0.org2.example.com peer lifecycle chaincode install fabcar.tar.gz
     
     echo "===================== installChaincode peer1.org2 ===================== "
-    setGlobalsForPeer1Org2
-    ./bin/peer lifecycle chaincode install ${CC_NAME}.tar.gz
+     docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
+    peer1.org2.example.com peer lifecycle chaincode install fabcar.tar.gz
 }
+
+installSedChaincode(){
+ echo "===================== installChaincode peer0.org3 ===================== " 
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+     peer0.org3.example.com peer lifecycle chaincode install fabcar.tar.gz
+}
+
 
 # installChaincode
 
 queryInstalled() {
     echo "===================== Query install on peer0.org1 on channel ===================== "
-    setGlobalsForPeer0Org1
-    ./bin/peer lifecycle chaincode queryinstalled >&log.txt
+
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org1.example.com peer lifecycle chaincode queryinstalled >&log.txt
     cat log.txt
-    PACKAGE_ID=$(sed -n "/${CC_NAME}_${VERSION}/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
+    PACKAGE_ID=$(sed -n "/fabcar_1/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
     echo PackageID is ${PACKAGE_ID}
     echo "===================== Query installed successful on peer0.org1 on channel ===================== "
 
     echo "===================== Query installed successful on peer0.org3 on channel ===================== "
-    setGlobalsForPeer0Org3
-    ./bin/peer lifecycle chaincode queryinstalled >&log.txt
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+    peer0.org3.example.com peer lifecycle chaincode queryinstalled >&log.txt
     cat log.txt
-    CERTIFICATE_PACKAGE_ID=$(sed -n "/${CC_NAME}_${VERSION}/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
+    CERTIFICATE_PACKAGE_ID=$(sed -n "/fabcar_1_1/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
     echo CERTIFICATE_PACKAGE_ID is ${CERTIFICATE_PACKAGE_ID}
     
 }
-
-# queryInstalled
-
+# f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78
+queryInstalled
+# /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
 approveForMyOrg1() {
      echo "===================== chaincode approved from org 1 $VERIFICATION_CHANNEL ===================== "
-    setGlobalsForPeer0Org1
+
+     docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org1.example.com peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 \
+    --ordererTLSHostnameOverride orderer.example.com --tls \
+    --cafile=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+    --channelID $VERIFICATION_CHANNEL --name=fabcar --version ${VERSION} \
+    --init-required --package-id ${PACKAGE_ID} \
+    --sequence ${VERSION}
+
+    # setGlobalsForPeer0Org1
     # set -x
-    ./bin/peer lifecycle chaincode approveformyorg -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.example.com --tls \
-        --cafile $ORDERER_CA --channelID $VERIFICATION_CHANNEL --name ${CC_NAME} --version ${VERSION} \
-        --init-required --package-id ${PACKAGE_ID} \
-        --sequence ${VERSION}
+    # ./bin/peer lifecycle chaincode approveformyorg -o localhost:7050 \
+    #     --ordererTLSHostnameOverride orderer.example.com --tls \
+    #     --cafile $ORDERER_CA --channelID $VERIFICATION_CHANNEL --name ${CC_NAME} --version ${VERSION} \
+    #     --init-required --package-id ${PACKAGE_ID} \
+    #     --sequence ${VERSION}
     # set +x
 }
-# approveForMyOrg1
+approveForMyOrg1
 
 approveForMyOrg2() {
     echo "===================== chaincode approve from org 2 $VERIFICATION_CHANNEL===================== "
@@ -120,9 +143,12 @@ approveForMyOrg3() {
 checkCommitReadyness() {
      echo "===================== checking commit readyness from org 1 $VERIFICATION_CHANNEL===================== "
     setGlobalsForPeer0Org1
-    ./bin/peer lifecycle chaincode checkcommitreadiness \
-        --channelID $VERIFICATION_CHANNEL --name ${CC_NAME} --version ${VERSION} \
-        --sequence ${VERSION} --output json --init-required
+
+     docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org1.example.com peer lifecycle chaincode checkcommitreadiness \
+        --channelID=verificationchannel --name=fabcar --version=1 \
+        --sequence=1 --output json --init-required
    
     echo "===================== checking commit readyness from org 3 $CERTIFICATE_CHANNEL ===================== "
     setGlobalsForPeer0Org3

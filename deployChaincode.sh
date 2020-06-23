@@ -74,13 +74,13 @@ queryInstalled() {
     echo PackageID is ${PACKAGE_ID}
     echo "===================== Query installed successful on peer0.org1 on channel ===================== "
 
-    echo "===================== Query installed successful on peer0.org3 on channel ===================== "
-    docker exec -e \
-    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
-    peer0.org3.example.com peer lifecycle chaincode queryinstalled >&log.txt
-    cat log.txt
-    CERTIFICATE_PACKAGE_ID=$(sed -n "/fabcar_1_1/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
-    echo CERTIFICATE_PACKAGE_ID is ${CERTIFICATE_PACKAGE_ID}
+    # echo "===================== Query installed successful on peer0.org3 on channel ===================== "
+    # docker exec -e \
+    # "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+    # peer0.org3.example.com peer lifecycle chaincode queryinstalled >&log.txt
+    # cat log.txt
+    # CERTIFICATE_PACKAGE_ID=$(sed -n "/fabcar_1_1/{s/^Package ID: //; s/, Label:.*$//; p;}" log.txt)
+    # echo CERTIFICATE_PACKAGE_ID is ${CERTIFICATE_PACKAGE_ID}
     
 }
 # f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78
@@ -92,11 +92,11 @@ approveForMyOrg1() {
      docker exec -e \
     "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
     peer0.org1.example.com peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 \
-    --ordererTLSHostnameOverride orderer.example.com --tls \
-    --cafile=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+    --ordererTLSHostnameOverride orderer.example.com \
     --channelID $VERIFICATION_CHANNEL --name=fabcar --version ${VERSION} \
     --init-required --package-id ${PACKAGE_ID} \
-    --sequence ${VERSION}
+    --sequence ${VERSION} --tls \
+    --cafile=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 
     # setGlobalsForPeer0Org1
     # set -x

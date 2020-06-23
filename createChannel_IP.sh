@@ -3,6 +3,7 @@ export ORDERER_CA=${PWD}/crypto-config/ordererOrganizations/example.com/orderers
 export PEER0_ORG1_CA=${PWD}/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls/ca.crt
 export PEER0_ORG2_CA=${PWD}/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
 export PEER0_ORG3_CA=${PWD}/crypto-config/peerOrganizations/org3.example.com/peers/peer0.org3.example.com/tls/ca.crt
+export FABRIC_CFG_PATH=${PWD}/config/
 
 # export CHANNEL_NAME=verificationchannel
 export VERIFICATION_CHANNEL="verificationchannel"

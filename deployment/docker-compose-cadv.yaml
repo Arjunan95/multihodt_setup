@@ -76,12 +76,12 @@ services:
       - ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/crypto/peer/msp
       - ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel-artifacts/:/etc/hyperledger/channel/
+      - ./:/etc/hyperledger/channel/
     extra_hosts:
-      - "orderer.example.com:13.233.115.108"
+      - "orderer.example.com:3.7.65.250"
       - "orderer2.example.com:3.7.65.250"
       - "orderer3.example.com:3.7.65.250"
-      - "peer0.org2.example.com:13.233.115.108"
+      - "peer0.org2.example.com:3.7.65.250
       - "peer0.org3.example.com:13.235.67.188"
     networks:
       fabric:

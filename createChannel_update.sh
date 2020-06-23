@@ -55,6 +55,7 @@ updateAnchorPeers(){
     
 }
 
+# if["$1"=="join"]
 createVerificationChannel
 # createCertificateChannel
 # joinChannel

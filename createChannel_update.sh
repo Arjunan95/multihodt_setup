@@ -6,30 +6,26 @@ export CERTIFICATE_CHANNEL="certificatechannel"
 
 
 createVerificationChannel(){
-    # peer channel create -o orderer.example.com:7050 -c $VERIFICATION_CHANNEL \
-    # --ordererTLSHostnameOverride orderer.example.com \
-    # -f ./channel-artifacts/${VERIFICATION_CHANNEL}.tx --outputBlock ./channel-artifacts/${VERIFICATION_CHANNEL}.block \
-    # --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
-
+    
     docker exec -e \
     "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
     peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c \
     verificationchannel -f /etc/hyperledger/channel/channel-artifacts/verificationchannel.tx \
     --tls --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem 
 
+    docker cp peer0.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer/verificationchannel.block .
+
 }
 
 createCertificateChannel(){
-    # peer channel create -o orderer.example.com:7050 -c $CERTIFICATE_CHANNEL \
-    # --ordererTLSHostnameOverride orderer.example.com \
-    # -f ./channel-artifacts/${CERTIFICATE_CHANNEL}.tx --outputBlock ./channel-artifacts/${CERTIFICATE_CHANNEL}.block \
-    # --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
-
+    
         docker exec -e \
         "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
         peer0.org3.example.com peer channel create -o orderer.example.com:7050 \
         -c certificatechannel -f /etc/hyperledger/channel/channel-artifacts/certificatechannel.tx \
         --tls --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem 
+
+    docker cp peer0.org3.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer/certificatechannel.block .
 }
 
 
@@ -100,18 +96,42 @@ updateAnchorPeers(){
 # 
 createVerificationChannel
 createCertificateChannel
-joinChannel
+
 # updateAnchorPeers
 
 # if [[ $1 == "cadv" ]]
 # then
 #    echo "CADV INIT"
-# elif [[ $1 == "tnega" ]]
-# then
-#    echo "TNEGA INIT"
+#    createVerificationChannel
+#    echo "you have verificationchannel.bolck created. you need push the file in git"
+# # elif [[ $1 == "tnega" ]]
+# # then
+# #    echo "TNEGA INIT"
+# #    joinChannelTnega
 # elif [[ $1 == "sed" ]]
 # then
 #    echo "SED INIT"
+#    createCertificateChannel
+#    echo "you have certificatechannel.bolck created. you need push the file in git"
+# #    joinChannelSed
+# else
+#    echo "./createchannel cadv"
+# fi
+
+# if [[ $1 == "cadv_join" ]]
+# then
+#    echo "CADV INIT"
+#    createVerificationChannel
+#    joinCadv
+# elif [[ $1 == "tnega_join" ]]
+# then
+#    echo "TNEGA INIT"
+#    joinChannelTnega
+# elif [[ $1 == "sed_join" ]]
+# then
+#    echo "SED INIT"
+#    createCertificateChannel
+#    joinChannelSed
 # else
 #    echo "./createchannel cadv"
 # fi

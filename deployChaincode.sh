@@ -15,7 +15,7 @@ export CERTIFICATE_CHANNEL="certificatechannel"
 # CHANNEL_NAME="verificationchannel"
 CC_RUNTIME_LANGUAGE="node"
 VERSION="1"
-CC_SRC_PATH="./artifacts/src/github.com/fabcar/javascript/"
+CC_SRC_PATH="/etc/hyperledger/channel/chanincode/javascript/"
 CC_NAME="fabcar"
 
 
@@ -25,12 +25,12 @@ packageChaincode() {
     # rm -rf ${CC_NAME}.tar.gz
     # setGlobalsForPeer0Org1
     docker exec -e \
-    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
-     peer0.org2.example.com  peer lifecycle chaincode package ${CC_NAME}.tar.gz \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+     peer0.org1.example.com  peer lifecycle chaincode package ${CC_NAME}.tar.gz \
         --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} \
         --label ${CC_NAME}_${VERSION}
 }
-# packageChaincode
+packageChaincode
 
 installChaincode() {
     

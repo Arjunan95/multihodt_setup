@@ -6,32 +6,66 @@ export CERTIFICATE_CHANNEL="certificatechannel"
 
 
 createVerificationChannel(){
-    # rm -rf ./channel-artifacts/*
-    # setGlobalsForPeer0Org1
-    peer channel create -o orderer.example.com:7050 -c $VERIFICATION_CHANNEL \
-    --ordererTLSHostnameOverride orderer.example.com \
-    -f ./channel-artifacts/${VERIFICATION_CHANNEL}.tx --outputBlock ./channel-artifacts/${VERIFICATION_CHANNEL}.block \
-    --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
+    # peer channel create -o orderer.example.com:7050 -c $VERIFICATION_CHANNEL \
+    # --ordererTLSHostnameOverride orderer.example.com \
+    # -f ./channel-artifacts/${VERIFICATION_CHANNEL}.tx --outputBlock ./channel-artifacts/${VERIFICATION_CHANNEL}.block \
+    # --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
+
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org1.example.com peer channel create -o orderer.example.com:7050 -c \
+    verificationchannel -f /etc/hyperledger/channel/channel-artifacts/verificationchannel.tx \
+    --tls --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem 
+
 }
 
 createCertificateChannel(){
-    # setGlobalsForPeer0Org3
-    peer channel create -o orderer.example.com:7050 -c $CERTIFICATE_CHANNEL \
-    --ordererTLSHostnameOverride orderer.example.com \
-    -f ./channel-artifacts/${CERTIFICATE_CHANNEL}.tx --outputBlock ./channel-artifacts/${CERTIFICATE_CHANNEL}.block \
-    --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
+    # peer channel create -o orderer.example.com:7050 -c $CERTIFICATE_CHANNEL \
+    # --ordererTLSHostnameOverride orderer.example.com \
+    # -f ./channel-artifacts/${CERTIFICATE_CHANNEL}.tx --outputBlock ./channel-artifacts/${CERTIFICATE_CHANNEL}.block \
+    # --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
+
+        docker exec -e \
+        "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+        peer0.org3.example.com peer channel create -o orderer.example.com:7050 \
+        -c certificatechannel -f /etc/hyperledger/channel/channel-artifacts/certificatechannel.tx \
+        --tls --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem 
 }
 
 
 
-joinVerificationChannel(){
-    echo "===================== joinChannel $VERIFICATION_CHANNEL ====================="
-    peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
+joinVerificationChannelCadv(){
+    echo "===================== joinVerificationChannelCadv $VERIFICATION_CHANNEL ====================="
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org1.example.com peer channel join \
+    -b /opt/gopath/src/github.com/hyperledger/fabric/peer/verificationchannel.block
 }
 
-joinCertificateChannel(){
-    echo "===================== joinChannel  $CERTIFICATE_CHANNEL ====================="
-    peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
+joinChannelTnega(){
+    echo "===================== joinChannelTnega peer0.Org2  $VERIFICATION_CHANNEL ====================="
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
+    peer0.org2.example.com peer channel join \
+    -b /opt/gopath/src/github.com/hyperledger/fabric/peer/verificationchannel.block
+
+    echo "===================== joinChannelTnega peer1.Org2  $VERIFICATION_CHANNEL ====================="
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
+    peer1.org2.example.com peer channel join \
+    -b /opt/gopath/src/github.com/hyperledger/fabric/peer/verificationchannel.block
+
+    echo "===================== joinChannelTnega peer0.Org2  $CERTIFICATE_CHANNEL ====================="
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
+    peer0.org2.example.com peer channel join \
+    -b /opt/gopath/src/github.com/hyperledger/fabric/peer/certificatechannel.block
+
+    echo "===================== joinChannelTnega peer1.Org2  $CERTIFICATE_CHANNEL ====================="
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp" \
+    peer1.org2.example.com peer channel join \
+    -b /opt/gopath/src/github.com/hyperledger/fabric/peer/certificatechannel.block
 }
 
 updateAnchorPeers(){

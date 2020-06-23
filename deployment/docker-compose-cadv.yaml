@@ -81,7 +81,7 @@ services:
       - "orderer.example.com:3.7.65.250"
       - "orderer2.example.com:3.7.65.250"
       - "orderer3.example.com:3.7.65.250"
-      - "peer0.org2.example.com:3.7.65.250
+      - "peer0.org2.example.com:3.7.65.250"
       - "peer0.org3.example.com:13.235.67.188"
     networks:
       fabric:

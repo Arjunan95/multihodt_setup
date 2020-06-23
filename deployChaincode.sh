@@ -95,7 +95,7 @@ approveForMyOrg1() {
     peer0.org1.example.com peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 \
     --ordererTLSHostnameOverride orderer.example.com \
     --channelID $VERIFICATION_CHANNEL --name=fabcar --version ${VERSION} \
-    --init-required --package-id=f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78 \
+    --init-required --package-id="fabcar_1:f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78" \
     --sequence ${VERSION} --tls \
     --cafile=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 

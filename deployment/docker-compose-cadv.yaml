@@ -18,8 +18,8 @@ services:
       - "7054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./channel/crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
-      - ./channel/crypto-config/peerOrganizations/org1.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+      - ./crypto-config/peerOrganizations/org1.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org1.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
     container_name: ca.org1.example.com
     hostname: ca.org1.example.com
     networks:
@@ -73,16 +73,16 @@ services:
     ports:
       - 7051:7051
     volumes:
-      - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/crypto/peer/msp
-      - ./channel/crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/crypto/peer/tls
+      - ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org1.example.com/peers/peer0.org1.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel/:/etc/hyperledger/channel/
+      - ./channel-artifacts/:/etc/hyperledger/channel/
     extra_hosts:
       - "orderer.example.com:13.233.115.108"
-      - "orderer2.example.com:113.233.115.108"
-      - "orderer3.example.com:113.233.115.108"
+      - "orderer2.example.com:3.7.65.250"
+      - "orderer3.example.com:3.7.65.250"
       - "peer0.org2.example.com:13.233.115.108"
-      - "peer0.org3.example.com:52.66.240.79"
+      - "peer0.org3.example.com:13.235.67.188"
     networks:
       fabric:
         aliases:

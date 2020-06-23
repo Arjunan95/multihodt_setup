@@ -111,7 +111,6 @@ updateAnchorPeers(){
     
 }
 
-removeOldCrypto
 createVerificationChannel
 createCertificateChannel
 joinChannel

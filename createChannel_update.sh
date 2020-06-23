@@ -34,7 +34,7 @@ createCertificateChannel(){
 
 
 
-joinVerificationChannelCadv(){
+joinCadv(){
     echo "===================== joinVerificationChannelCadv $VERIFICATION_CHANNEL ====================="
     docker exec -e \
     "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
@@ -68,6 +68,14 @@ joinChannelTnega(){
     -b /opt/gopath/src/github.com/hyperledger/fabric/peer/certificatechannel.block
 }
 
+joinChannelSed(){
+    echo "===================== joinChannelTnega peer0.Org3  $CERTIFICATE_CHANNEL ====================="
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+    peer0.org3.example.com peer channel join \
+    -b /opt/gopath/src/github.com/hyperledger/fabric/peer/certificatechannel.block
+}
+
 updateAnchorPeers(){
     echo "===================== peer0.Org1 updateAnchorPeers $VERIFICATION_CHANNEL ====================="
     setGlobalsForPeer0Org1
@@ -89,8 +97,21 @@ updateAnchorPeers(){
     
 }
 
-# if["$1"=="join"]
+# 
 createVerificationChannel
-# createCertificateChannel
-# joinChannel
+createCertificateChannel
+joinChannel
 # updateAnchorPeers
+
+# if [[ $1 == "cadv" ]]
+# then
+#    echo "CADV INIT"
+# elif [[ $1 == "tnega" ]]
+# then
+#    echo "TNEGA INIT"
+# elif [[ $1 == "sed" ]]
+# then
+#    echo "SED INIT"
+# else
+#    echo "./createchannel cadv"
+# fi

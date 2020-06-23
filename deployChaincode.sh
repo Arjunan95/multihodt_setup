@@ -83,6 +83,8 @@ queryInstalled() {
     # echo CERTIFICATE_PACKAGE_ID is ${CERTIFICATE_PACKAGE_ID}
     
 }
+
+# fabcar_1:f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78
 # fabcar_1:f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78
 # f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78
 queryInstalled
@@ -94,9 +96,9 @@ approveForMyOrg1() {
     "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
     peer0.org1.example.com peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 \
     --ordererTLSHostnameOverride orderer.example.com \
-    --channelID $VERIFICATION_CHANNEL --name=fabcar --version ${VERSION} \
-    --init-required --package-id="fabcar_1:f14a2d6cec8c12eb85fb99d2937366ccc552fae2ec0e92b62050c3855b710d78" \
-    --sequence ${VERSION} --tls \
+    --channelID=verificationchannel --name=fabcar --version=1 \
+    --init-required --package-id ${PACKAGE_ID} \
+    --sequence=1 --tls \
     --cafile=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
 
     # setGlobalsForPeer0Org1
@@ -131,13 +133,23 @@ approveForMyOrg2() {
 # approveForMyOrg2
 
 approveForMyOrg3() {
-    echo "===================== chaincode approve from org 3 ===================== "
-    setGlobalsForPeer0Org3
-    ./bin/peer lifecycle chaincode approveformyorg -o localhost:7050 \
-        --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED \
-        --cafile $ORDERER_CA --channelID $CERTIFICATE_CHANNEL --name ${CC_NAME} \
-        --version ${VERSION} --init-required --package-id ${CERTIFICATE_PACKAGE_ID} \
-        --sequence ${VERSION}
+    # echo "===================== chaincode approve from org 3 ===================== "
+    # setGlobalsForPeer0Org3
+    # ./bin/peer lifecycle chaincode approveformyorg -o localhost:7050 \
+    #     --ordererTLSHostnameOverride orderer.example.com --tls $CORE_PEER_TLS_ENABLED \
+    #     --cafile $ORDERER_CA --channelID $CERTIFICATE_CHANNEL --name ${CC_NAME} \
+    #     --version ${VERSION} --init-required --package-id ${CERTIFICATE_PACKAGE_ID} \
+    #     --sequence ${VERSION}
+
+    docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org3.example.com/users/Admin@org3.example.com/msp" \
+    peer0.org3.example.com peer lifecycle chaincode approveformyorg -o orderer.example.com:7050 \
+    --ordererTLSHostnameOverride orderer.example.com \
+    --channelID=certificatechannel --name=fabcar --version=1 \
+    --init-required --package-id ${PACKAGE_ID} \
+    --sequence=1 --tls \
+    --cafile=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem \
+
 }
 
 # approveForMyOrg3
@@ -180,11 +192,16 @@ checkCommitReadyness() {
 
 commitChaincodeDefination() {
     setGlobalsForPeer0Org1
-    ./bin/peer lifecycle chaincode commit -o localhost:7050 --ordererTLSHostnameOverride orderer.example.com \
+     docker exec -e \
+    "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
+    peer0.org3.example.com peer lifecycle chaincode commit -o orderer.example.com:7050 \
+    --ordererTLSHostnameOverride orderer.example.com \
         --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA \
         --channelID $VERIFICATION_CHANNEL --name ${CC_NAME} \
-        --peerAddresses localhost:7051 --tlsRootCertFiles $PEER0_ORG1_CA \
-        --peerAddresses localhost:9051 --tlsRootCertFiles $PEER0_ORG2_CA \
+        --peerAddresses peer1.org2.example.com:7051\
+        --tlsRootCertFiles $PEER0_ORG1_CA \
+        --peerAddresses peer0.org2.example.com:9051 \
+        --tlsRootCertFiles $PEER0_ORG2_CA \
         --version ${VERSION} --sequence ${VERSION} --init-required
 
     setGlobalsForPeer0Org3

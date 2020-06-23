@@ -49,7 +49,7 @@ setGlobalsForPeer1Org2(){
 createVerificationChannel(){
     # rm -rf ./channel-artifacts/*
     setGlobalsForPeer0Org1
-    ./bin/peer channel create -o orderer.example.com:7050 -c $VERIFICATION_CHANNEL \
+    peer channel create -o orderer.example.com:7050 -c $VERIFICATION_CHANNEL \
     --ordererTLSHostnameOverride orderer.example.com \
     -f ./channel-artifacts/${VERIFICATION_CHANNEL}.tx --outputBlock ./channel-artifacts/${VERIFICATION_CHANNEL}.block \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
@@ -57,7 +57,7 @@ createVerificationChannel(){
 
 createCertificateChannel(){
     setGlobalsForPeer0Org3
-    ./bin/peer channel create -o orderer.example.com:7050 -c $CERTIFICATE_CHANNEL \
+    peer channel create -o orderer.example.com:7050 -c $CERTIFICATE_CHANNEL \
     --ordererTLSHostnameOverride orderer.example.com \
     -f ./channel-artifacts/${CERTIFICATE_CHANNEL}.tx --outputBlock ./channel-artifacts/${CERTIFICATE_CHANNEL}.block \
     --tls $CORE_PEER_TLS_ENABLED --cafile $ORDERER_CA
@@ -68,45 +68,45 @@ createCertificateChannel(){
 joinChannel(){
     echo "===================== peer0.Org1 joinChannel $VERIFICATION_CHANNEL ====================="
     setGlobalsForPeer0Org1
-    ./bin/peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
+    peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
 
     echo "===================== peer0.Org2 joinChannel  $VERIFICATION_CHANNEL ====================="
     setGlobalsForPeer0Org2
-    ./bin/peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
+    peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
     
     echo "===================== peer1.Org2 joinChannel $VERIFICATION_CHANNEL ====================="
     setGlobalsForPeer1Org2
-    ./bin/peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
+    peer channel join -b ./channel-artifacts/$VERIFICATION_CHANNEL.block
 
     echo "===================== peer0.Org2 joinChannel  $CERTIFICATE_CHANNEL ====================="
     setGlobalsForPeer0Org2
-    ./bin/peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
+    peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
     
     echo "===================== peer1.Org2 joinChannel $CERTIFICATE_CHANNEL ====================="
     setGlobalsForPeer1Org2
-    ./bin/peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
+    peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block
 
     echo "===================== peer0.Org3 joinChannel $CERTIFICATE_CHANNEL ====================="
     setGlobalsForPeer0Org3
-    ./bin/peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block   
+    peer channel join -b ./channel-artifacts/$CERTIFICATE_CHANNEL.block   
 }
 
 updateAnchorPeers(){
     echo "===================== peer0.Org1 updateAnchorPeers $VERIFICATION_CHANNEL ====================="
     setGlobalsForPeer0Org1
-    ./bin/peer channel update -o peer0.org1.example.com:7050 --ordererTLSHostnameOverride orderer.example.com \
+    peer channel update -o peer0.org1.example.com:7050 --ordererTLSHostnameOverride orderer.example.com \
     -c $VERIFICATION_CHANNEL -f ./artifacts/channel/${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED \
     --cafile $ORDERER_CA
     
     echo "===================== peer0.Org2 updateAnchorPeers $VERIFICATION_CHANNEL====================="
     setGlobalsForPeer0Org2
-    ./bin/peer channel update -o peer0.org2.example.com:7050 --ordererTLSHostnameOverride orderer.example.com \
+    peer channel update -o peer0.org2.example.com:7050 --ordererTLSHostnameOverride orderer.example.com \
     -c $VERIFICATION_CHANNEL -f ./artifacts/channel/${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED \
     --cafile $ORDERER_CA
     
     echo "===================== peer0.Org3 updateAnchorPeers $CERTIFICATE_CHANNEL====================="
     setGlobalsForPeer0Org3
-    ./bin/peer channel update -o peer0.org3.example.com:7050 --ordererTLSHostnameOverride orderer.example.com \
+    peer channel update -o peer0.org3.example.com:7050 --ordererTLSHostnameOverride orderer.example.com \
     -c $CERTIFICATE_CHANNEL -f ./artifacts/channel/${CORE_PEER_LOCALMSPID}anchors.tx --tls $CORE_PEER_TLS_ENABLED \
     --cafile $ORDERER_CA
     

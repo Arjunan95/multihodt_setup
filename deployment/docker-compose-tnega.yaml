@@ -20,8 +20,8 @@ services:
       - "8054:7054"
     command: sh -c 'fabric-ca-server start -b admin:adminpw -d'
     volumes:
-      - ./channel/crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
-      - ./channel/crypto-config/peerOrganizations/org2.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
+      - ./crypto-config/peerOrganizations/org2.example.com/ca/:/etc/hyperledger/fabric-ca-server-config
+      - ./crypto-config/peerOrganizations/org2.example.com/tlsca/:/etc/hyperledger/fabric-ca-server-tls
     container_name: ca.org2.example.com
     hostname: ca.org2.example.com
     networks:
@@ -62,9 +62,9 @@ services:
       aliases:
         - net
     volumes:
-      - ./channel/genesis.block:/var/hyperledger/orderer/genesis.block
-      - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
-      - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/var/hyperledger/orderer/tls
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/genesis.block
+      - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/var/hyperledger/orderer/tls
 
   orderer2.example.com:
     container_name: orderer2.example.com
@@ -99,9 +99,9 @@ services:
       aliases:
         - net
     volumes:
-      - ./channel/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/orderer/msp
-      - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls:/var/hyperledger/orderer/tls
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/example.com/orderers/orderer2.example.com/tls:/var/hyperledger/orderer/tls
 
   orderer3.example.com:
     container_name: orderer3.example.com
@@ -136,9 +136,9 @@ services:
       aliases:
         - net
     volumes:
-      - ./channel/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
-      - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/msp:/var/hyperledger/orderer/msp
-      - ./channel/crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls:/var/hyperledger/orderer/tls
+      - ./channel-artifacts/genesis.block:/var/hyperledger/orderer/orderer.genesis.block
+      - ./crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/msp:/var/hyperledger/orderer/msp
+      - ./crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls:/var/hyperledger/orderer/tls
 
 
   couchdb3:
@@ -198,16 +198,16 @@ services:
     ports:
       - 9051:9051
     volumes:
-      - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/crypto/peer/msp
-      - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
+      - ./crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel/:/etc/hyperledger/channel/
+      - ./channel-artifacts/:/etc/hyperledger/channel/
     extra_hosts:
-      - "orderer.example.com:113.233.115.108"
-      - "orderer2.example.com:113.233.115.108"
-      - "orderer3.example.com:113.233.115.108"
+      - "orderer.example.com:3.7.65.250"
+      - "orderer2.example.com:3.7.65.250"
+      - "orderer3.example.com:3.7.65.250"
       - "peer0.org1.example.com:15.206.237.145"
-      - "peer0.org3.example.com:52.66.240.79"
+      - "peer0.org3.example.com:13.235.67.188"
     networks:
      fabric:
       aliases:
@@ -244,16 +244,16 @@ services:
     ports:
       - 10051:10051
     volumes:
-      - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/crypto/peer/msp
-      - ./channel/crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
+      - ./crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/msp:/etc/hyperledger/crypto/peer/msp
+      - ./crypto-config/peerOrganizations/org2.example.com/peers/peer1.org2.example.com/tls:/etc/hyperledger/crypto/peer/tls
       - /var/run/:/host/var/run/
-      - ./channel/:/etc/hyperledger/channel/
+      - ./channel-artifacts/:/etc/hyperledger/channel/
     extra_hosts:
-      - "orderer.example.com:113.233.115.108"
-      - "orderer2.example.com:113.233.115.108"
-      - "orderer3.example.com:113.233.115.108"
+      - "orderer.example.com:3.7.65.250"
+      - "orderer2.example.com:3.7.65.250"
+      - "orderer3.example.com:3.7.65.250"
       - "peer0.org1.example.com:15.206.237.145"
-      - "peer0.org3.example.com:52.66.240.79"
+      - "peer0.org3.example.com:13.235.67.188"
     networks:
      fabric:
       aliases:

@@ -140,7 +140,6 @@ services:
       - ./crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/msp:/var/hyperledger/orderer/msp
       - ./crypto-config/ordererOrganizations/example.com/orderers/orderer3.example.com/tls:/var/hyperledger/orderer/tls
 
-
   couchdb3:
     container_name: couchdb3
     image: hyperledger/fabric-couchdb

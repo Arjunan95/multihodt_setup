@@ -1,0 +1,29 @@
+
+version: '2'
+
+networks:
+    fabric:
+
+services:
+
+    orderer.example.com:
+        extends:
+            file: docker-compose-base.yaml
+            service: orderer
+        container_name: orderer.example.com
+        environment:
+            - ORDERER_HOST=orderer.example.com
+        extra_hosts:
+            - "peer0.org1.example.com:15.206.237.145"
+            - "peer0.org2.example.com:13.233.115.108"
+            - "peer0.org3.example.com:52.66.240.79"
+        volumes:
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/msp
+            - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/var/hyperledger/tls
+            - ../channel-artifacts/:/var/hyperledger/configs
+        networks:
+          fabric:
+             aliases:
+               - net
+        ports:
+          - 7050:7050

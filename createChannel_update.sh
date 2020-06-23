@@ -1,3 +1,5 @@
+export ORDERER_CA=/etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem
+
 # export CHANNEL_NAME=verificationchannel
 export VERIFICATION_CHANNEL="verificationchannel"
 export CERTIFICATE_CHANNEL="certificatechannel"

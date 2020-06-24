@@ -17,6 +17,9 @@ createVerificationChannel(){
     verificationchannel -f /etc/hyperledger/channel/channel-artifacts/verificationchannel.tx \
     --tls --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem 
 
+    docker cp peer0.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer/verificationchannel.block .
+
+
 }
 
 createCertificateChannel(){
@@ -30,6 +33,8 @@ createCertificateChannel(){
         peer0.org3.example.com peer channel create -o orderer.example.com:7050 \
         -c certificatechannel -f /etc/hyperledger/channel/channel-artifacts/certificatechannel.tx \
         --tls --cafile /etc/hyperledger/channel/crypto-config/ordererOrganizations/example.com/tlsca/tlsca.example.com-cert.pem 
+
+docker cp peer0.org3.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer/certificatechannel.block .
 }
 
 

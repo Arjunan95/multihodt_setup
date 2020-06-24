@@ -90,6 +90,13 @@ docker cp certificatechannel.block peer1.org2.example.com:/opt/gopath/src/github
 docker cp verificationchannel.block peer0.org3.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
 docker cp certificatechannel.block peer0.org3.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
 
+docker cp peer0.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer/fabcar.tar.gz .
+
+docker cp fabcar.tar.gz peer0.org2.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
+docker cp fabcar.tar.gz peer1.org2.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
+
+docker cp fabcar.tar.gz peer0.org3.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
+
 
 docker exec -ti peer0.org1.example.com sh
 docker exec -ti peer0.org2.example.com sh
@@ -103,3 +110,9 @@ CC_NAME="fabcar"
 export VERIFICATION_CHANNEL="verificationchannel"
 export CERTIFICATE_CHANNEL="certificatechannel"
 
+
+
+docker rm -f $(docker ps -aq)
+docker-compose -f docker-compose-cadv.yaml up -d
+docker-compose -f docker-compose-tnega.yaml up -d
+docker-compose -f docker-compose-sed.yaml up -d

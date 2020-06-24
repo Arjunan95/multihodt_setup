@@ -26,9 +26,9 @@ packageChaincode() {
     # setGlobalsForPeer0Org1
     docker exec -e \
     "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
-     peer0.org1.example.com  peer lifecycle chaincode package ${CC_NAME}.tar.gz \
-        --path ${CC_SRC_PATH} --lang ${CC_RUNTIME_LANGUAGE} \
-        --label ${CC_NAME}_${VERSION}
+     peer0.org1.example.com  peer lifecycle chaincode package fabcar.tar.gz \
+        --path "/etc/hyperledger/channel/chanincode/javascript/" --lang node \
+        --label fabcar_1
 }
 # packageChaincode
 

@@ -14,9 +14,9 @@ services:
         environment:
             - ORDERER_HOST=orderer.example.com
         extra_hosts:
-            - "peer0.org1.example.com:172.31.58.209"
-            - "peer0.org2.example.com:172.31.51.44"
-            - "peer0.org3.example.com:172.31.53.42"
+            - "peer0.org1.example.com:15.206.237.145"
+            - "peer0.org2.example.com:3.7.65.250"
+            - "peer0.org3.example.com:13.235.67.188"
         volumes:
             - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/msp:/var/hyperledger/msp
             - ../crypto-config/ordererOrganizations/example.com/orderers/orderer.example.com/tls:/var/hyperledger/tls

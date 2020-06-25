@@ -28,9 +28,9 @@ services:
             - ../crypto-config/peerOrganizations/org1.example.com/users:/var/hyperledger/users
             - ../channel-artifacts/:/var/hyperledger/configs
         extra_hosts:
-            - "orderer.example.com:172.31.60.217"
-            - "peer0.org2.example.com:172.31.51.44"
-            - "peer0.org3.example.com:172.31.53.42"
+            - "orderer.example.com:3.7.65.250"
+            - "peer0.org2.example.com:3.7.65.250"
+            - "peer0.org3.example.com:13.235.67.188"
         networks:
           fabric:
              aliases:
@@ -53,7 +53,7 @@ services:
           - CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp
           - CORE_CHAINCODE_KEEPALIVE=10
         extra_hosts:
-          - "orderer.example.com:172.31.60.217"
+          - "orderer.example.com:3.7.65.250"
         working_dir: /opt/gopath/src/github.com/hyperledger/fabric/peer
         command: /bin/bash
         volumes:
@@ -67,4 +67,3 @@ services:
         networks:
             - fabric
             
-view rawdocker-compose-node1.yml hosted with ❤ by GitHub

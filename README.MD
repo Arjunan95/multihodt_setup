@@ -92,6 +92,9 @@ docker cp certificatechannel.block peer0.org3.example.com:/opt/gopath/src/github
 
 docker cp peer0.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer/fabcar.tar.gz .
 
+
+docker cp fabcar.tar.gz peer0.org1.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
+
 docker cp fabcar.tar.gz peer0.org2.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
 docker cp fabcar.tar.gz peer1.org2.example.com:/opt/gopath/src/github.com/hyperledger/fabric/peer
 
@@ -116,3 +119,10 @@ docker rm -f $(docker ps -aq)
 docker-compose -f docker-compose-cadv.yaml up -d
 docker-compose -f docker-compose-tnega.yaml up -d
 docker-compose -f docker-compose-sed.yaml up -d
+
+
+
+
+docker cp configtx.yaml peer0.org1.example.com:/etc/hyperledger/fabric
+docker cp core.yaml peer0.org1.example.com:/etc/hyperledger/fabric
+docker cp orderer.yaml peer0.org1.example.com:/etc/hyperledger/fabric

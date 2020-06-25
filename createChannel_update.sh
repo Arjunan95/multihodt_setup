@@ -86,7 +86,7 @@ updateAnchorPeers(){
     # setGlobalsForPeer0Org1
      docker exec -e \
     "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/channel/crypto-config/peerOrganizations/org1.example.com/users/Admin@org1.example.com/msp" \
-    peer0.org1.example.com peer channel update -o peer0.org1.example.com:7050 \
+    peer0.org1.example.com peer channel update -o orderer.example.com:7050 \
     --ordererTLSHostnameOverride orderer.example.com \
     -c verificationchannel \
     -f /etc/hyperledger/channel/channel-artifacts/Org1MSPanchors.tx \

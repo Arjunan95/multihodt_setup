@@ -144,4 +144,4 @@ joinChannel
 #    echo "SED INIT"
 # else
 #    echo "./createchannel cadv"
-# fi
+# fid
